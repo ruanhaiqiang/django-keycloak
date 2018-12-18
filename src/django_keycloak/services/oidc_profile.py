@@ -36,7 +36,7 @@ def get_or_create_from_id_token(client, id_token):
         UserModel = get_user_model()
         email_field_name = UserModel.get_email_field_name()
         user, _ = UserModel.objects.update_or_create(
-            username=id_token_object['sub'],
+            username=id_token_object.get('preferred_username', ''),
             defaults={
                 email_field_name: id_token_object.get('email', ''),
                 'first_name': id_token_object.get('given_name', ''),
@@ -112,7 +112,7 @@ def _update_or_create(client, token_response, initiate_time):
         UserModel = get_user_model()
         email_field_name = UserModel.get_email_field_name()
         user, _ = UserModel.objects.update_or_create(
-            username=id_token_object['sub'],
+            username=id_token_object.get('preferred_username', ''),
             defaults={
                 email_field_name: userinfo.get('email', ''),
                 'first_name': userinfo.get('given_name', ''),
